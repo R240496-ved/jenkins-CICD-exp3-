@@ -1,0 +1,127 @@
+EXP 3 – Jenkins CI with GitHub and Scheduled SCM Polling
+
+Aim:
+To configure Jenkins to fetch source code from a GitHub repository and automatically trigger a pipeline when changes are detected through SCM polling every five minutes.
+
+Requirements:
+1. Jenkins
+2. Git
+3. GitHub account
+4. Internet connection
+
+Step 1: Check Git Installation
+
+Open PowerShell and execute:
+
+    git --version
+
+If Git is installed, its version will be displayed.
+
+Step 2: Clone the GitHub Repository
+
+Open PowerShell and execute:
+
+    cd "$HOME\Desktop"
+    git clone https://github.com/R240496-ved/jenkins-docker-practical_10.git
+    cd jenkins-docker-practical_10
+    dir
+
+The repository contains the project files and Jenkinsfile required for the pipeline.
+
+Step 3: Start Jenkins
+
+Open Jenkins in your browser using the address configured on your computer.
+
+For a local installation, the address may be:
+
+    http://localhost:8080
+
+If Jenkins is running on another port, use that port instead.
+
+Step 4: Create a Jenkins Pipeline Job
+
+1. Open the Jenkins dashboard.
+2. Click New Item.
+3. Enter the job name: Jenkins SCM Polling.
+4. Select Pipeline.
+5. Click OK.
+
+Step 5: Configure the Pipeline
+
+Under the Pipeline section, select the following settings:
+
+Definition: Pipeline script from SCM
+
+SCM: Git
+
+Repository URL:
+
+    https://github.com/R240496-ved/jenkins-docker-practical_10.git
+
+Branch Specifier:
+
+    */main
+
+Script Path:
+
+    Jenkinsfile
+
+Click Save.
+
+Step 6: Configure SCM Polling
+
+1. Open the job configuration.
+2. Find the Build Triggers section.
+3. Enable Poll SCM.
+4. Enter the following schedule:
+
+    H/5 * * * *
+
+5. Click Save.
+
+This configures Jenkins to check the GitHub repository approximately every five minutes.
+
+Step 7: Execute the Pipeline
+
+1. Open the Jenkins SCM Polling job.
+2. Click Build Now.
+3. Open the build number.
+4. Click Console Output.
+5. Verify whether the pipeline executes successfully.
+
+Step 8: Test SCM Polling
+
+1. Make a small change to a file in the local repository.
+2. Save the file.
+3. Open PowerShell in the repository directory and execute:
+
+       git add .
+       git commit -m "Test SCM polling"
+       git push origin main
+
+4. Wait for the next scheduled poll.
+5. Check Jenkins to see whether a new build has started.
+
+Note: SCM polling is not an immediate trigger. Jenkins checks the repository according to the configured schedule.
+
+Step 9: Verify the Results
+
+Verify the following:
+
+1. Jenkins is connected to the GitHub repository.
+2. The pipeline executes successfully.
+3. Poll SCM is enabled with the schedule H/5 * * * *.
+4. Jenkins detects a new commit and triggers a build.
+
+Important Note:
+The existing Jenkinsfile in the repository is designed to build and deploy a Docker-based web application. Therefore, this pipeline may also require Docker to be running and accessible to Jenkins. If EXP 3 requires only a basic CI pipeline, use a suitable CI-only Jenkinsfile instead.
+
+Expected Result:
+Jenkins is configured to fetch source code from GitHub and poll the repository approximately every five minutes. A new build is triggered when changes are detected.
+
+Screenshots Required:
+1. GitHub repository showing the project files.
+2. Jenkins pipeline configuration showing the repository URL and Jenkinsfile path.
+3. Build Triggers section showing Poll SCM and the polling schedule.
+4. Jenkins Console Output showing the build result.
+5. A new Jenkins build triggered after a GitHub commit.
